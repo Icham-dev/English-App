@@ -62,7 +62,7 @@ class MainView(QMainWindow):
         self.stackedWidget = QStackedWidget()
 
         self.playPage = QFrame()
-        self.playPage.setMaximumSize(1500, 844)
+        self.playPage.setMaximumSize(1500, 845)
         self.playPage.setMinimumSize(1000, 563)
         self.playPage.setStyleSheet("background-color: rgba(255, 255, 255, 0.90); color:black; border-radius:10px;")
         self.playPageLayout = QVBoxLayout(self.playPage)
