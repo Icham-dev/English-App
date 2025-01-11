@@ -1,6 +1,5 @@
 import time
 import random
-import colorama
 import os
 
 from PyQt6.QtWidgets import *
@@ -12,7 +11,7 @@ class MainView(QMainWindow):
         super().__init__()
         self.controller = None
         self.imgPath = os.path.join(os.path.dirname(__file__), "img/")
-
+        self.screen = QGuiApplication.primaryScreen().availableGeometry()
         self.setWindowTitle("English Training")
 
         centreWidget = QWidget()
@@ -62,8 +61,7 @@ class MainView(QMainWindow):
         self.stackedWidget = QStackedWidget()
 
         self.playPage = QFrame()
-        self.playPage.setMaximumSize(1500, 845)
-        self.playPage.setMinimumSize(1000, 563)
+        self.playPage.setMinimumSize(self.screen.width()-self.sideBar.width()*2, self.screen.height()-self.sideBar.width()*2)
         self.playPage.setStyleSheet("background-color: rgba(255, 255, 255, 0.90); color:black; border-radius:10px;")
         self.playPageLayout = QVBoxLayout(self.playPage)
 
@@ -133,19 +131,19 @@ class MainView(QMainWindow):
         self.questionBox.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
         self.verb = QLabel(random_phrase[1])
-        self.verb.setStyleSheet("background-color: #FFD43B; padding: 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
+        self.verb.setStyleSheet("background-color: #FFD43B; padding: 0 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
         self.verb.setMaximumHeight(70)
         self.subject = QLabel(random_phrase[0])
-        self.subject.setStyleSheet("background-color: #FFD43B; padding: 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
+        self.subject.setStyleSheet("background-color: #FFD43B; padding: 0 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
         self.subject.setMaximumHeight(70)
         self.tense = QLabel(random_phrase[2])
-        self.tense.setStyleSheet("background-color: #FFD43B; padding: 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
+        self.tense.setStyleSheet("background-color: #FFD43B; padding: 0 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
         self.tense.setMaximumHeight(70)
         self.form = QLabel(random_phrase[3])
-        self.form.setStyleSheet("background-color: #FFD43B; padding: 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
+        self.form.setStyleSheet("background-color: #FFD43B; padding: 0 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
         self.form.setMaximumHeight(70)
-        self.questionBox.addWidget(self.verb)
         self.questionBox.addWidget(self.subject)
+        self.questionBox.addWidget(self.verb)
         self.questionBox.addWidget(self.tense)
         self.questionBox.addWidget(self.form)
 
@@ -165,6 +163,22 @@ class MainView(QMainWindow):
             self.playPageLayout.addWidget(self.question)
             self.playPageLayout.addLayout(self.questionBox)
 
+            self.mainmenuButton = QPushButton("Main Menu")
+            self.mainmenuButton.setStyleSheet("""
+                QPushButton {
+                    background-color:#FFD43B;
+                    padding: 10px 30px;
+                    font-size: 20px;
+                    border-radius: 5px;
+                    color:#0a2463;
+                    font-weight: 600;
+                }
+                QPushButton:hover {
+                    background-color: #0a2463;
+                    color: #FFD43B;
+                }
+            """)
+
             self.nextquestionButton = QPushButton("Next")
             self.nextquestionButton.setStyleSheet("""
                 QPushButton {
@@ -180,6 +194,7 @@ class MainView(QMainWindow):
                     color: #FFD43B;
                 }
             """)
+            self.playPageLayout.addWidget(self.mainmenuButton, alignment=Qt.AlignmentFlag.AlignHCenter)
             self.playPageLayout.addWidget(self.nextquestionButton, alignment=Qt.AlignmentFlag.AlignCenter)
             self.nextquestionButton.clicked.connect(lambda: self.nextQuestionAction())
             
@@ -204,17 +219,17 @@ class MainView(QMainWindow):
 
 
 
+"""
+def choose_mod():
+    r = input("Play or Parameter ? : ")
 
-#def choose_mod():
-#    r = input("Play or Parameter ? : ")
-#
-#    while r.lower() not in ["play", "parameter"]:
-#        r = input("Please write your answer correctly (Play or Parameter) : ")
-#
-#    if r.lower() == "play":
-#        return "play"
-#    elif r.lower() == "parameter":
-#        return "parameter"
+    while r.lower() not in ["play", "parameter"]:
+        r = input("Please write your answer correctly (Play or Parameter) : ")
+
+    if r.lower() == "play":
+        return "play"
+    elif r.lower() == "parameter":
+        return "parameter"
 
 def is_parameter_finish():
     r = input("Are you finished ?(Yes/No) : ")
@@ -368,3 +383,5 @@ def question(random_phrase):
 
 def check_answer(answer, verb, tense, subject, form):
     pass
+
+"""

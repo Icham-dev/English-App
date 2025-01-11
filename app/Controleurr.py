@@ -53,9 +53,6 @@ class MainControlleur:
                 [tenses.add_tenses, tenses.select_tenses, tenses.deselect_tenses, tenses.update_tense],
                 [forms.add_forms, forms.select_forms, forms.deselect_forms, forms.update_form]]
 
-def answer():
-    return input(": ").lower
-    
 
 if __name__ == "__main__":
     app = Vue.QApplication(sys.argv)
@@ -69,8 +66,7 @@ if __name__ == "__main__":
 
     controller = MainControlleur(verbModel, tenseModel, subjectModel, formModel, view)
 
-    view.resize(1400, 600)
-    view.show()
+    view.showMaximized()
 
     sys.exit(app.exec())
 
