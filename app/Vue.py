@@ -104,12 +104,7 @@ class MainView(QMainWindow):
             self.startPlayButton.deleteLater()
             self.startPlayButton = None
         else:
-            widgets = [self.question, self.verb, self.subject, self.tense, self.form]
-            for widget in widgets:
-                self.playPageLayout.removeWidget(widget)
-                widget.deleteLater()
-            self.playPageLayout.removeItem(self.questionBox)
-            self.questionBox.deleteLater()
+            self.removePlaypageWidget()
 
         self.decompte = 3
         self.timePrint = QLabel(f"{self.decompte}")
@@ -122,13 +117,26 @@ class MainView(QMainWindow):
         self.timer.start()
 
         self.question = QLabel("Give me a sentence with : ")
-        self.question.setStyleSheet(f"font-size: 24px; font-weight: 400; color: black; background-color:none;")
-        self.question.setMinimumHeight(50)
+        self.question.setStyleSheet(f"font-size: 40px; font-weight: 400; color: black; background-color:none;")
+        self.question.setMinimumHeight(70)
         self.question.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.question.setAlignment(Qt.AlignmentFlag.AlignHCenter)
 
-        self.questionBox = QHBoxLayout()
+        self.questionBox = QGridLayout()
         self.questionBox.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+
+        self.verbAttachement = QLabel("Verb :")
+        self.verbAttachement.setStyleSheet("background:none; font-size: 20px;")
+        self.verbAttachement.setMaximumHeight(50)
+        self.subjectAttachement = QLabel("Subject :")
+        self.subjectAttachement.setStyleSheet("background:none; font-size: 20px;")
+        self.subjectAttachement.setMaximumHeight(50)
+        self.tenseAttachement = QLabel("Tense :")
+        self.tenseAttachement.setStyleSheet("background:none; font-size: 20px;")
+        self.tenseAttachement.setMaximumHeight(50)
+        self.formAttachement = QLabel("Form :")
+        self.formAttachement.setStyleSheet("background:none; font-size: 20px;")
+        self.formAttachement.setMaximumHeight(50)
 
         self.verb = QLabel(random_phrase[1])
         self.verb.setStyleSheet("background-color: #FFD43B; padding: 0 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
@@ -142,10 +150,16 @@ class MainView(QMainWindow):
         self.form = QLabel(random_phrase[3])
         self.form.setStyleSheet("background-color: #FFD43B; padding: 0 10px; border-radius: 3px; font-size: 40px; font-weight: 600;")
         self.form.setMaximumHeight(70)
-        self.questionBox.addWidget(self.subject)
-        self.questionBox.addWidget(self.verb)
-        self.questionBox.addWidget(self.tense)
-        self.questionBox.addWidget(self.form)
+
+        self.questionBox.addWidget(self.subjectAttachement, 0, 0)
+        self.questionBox.addWidget(self.verbAttachement, 0, 1)
+        self.questionBox.addWidget(self.tenseAttachement, 0, 2)
+        self.questionBox.addWidget(self.formAttachement, 0, 3)
+
+        self.questionBox.addWidget(self.subject, 1, 0)
+        self.questionBox.addWidget(self.verb, 1, 1)
+        self.questionBox.addWidget(self.tense, 1, 2)
+        self.questionBox.addWidget(self.form, 1, 3)
 
     def updateCountdown(self):
         if self.decompte > 1:
@@ -194,15 +208,50 @@ class MainView(QMainWindow):
                     color: #FFD43B;
                 }
             """)
-            self.playPageLayout.addWidget(self.mainmenuButton, alignment=Qt.AlignmentFlag.AlignHCenter)
-            self.playPageLayout.addWidget(self.nextquestionButton, alignment=Qt.AlignmentFlag.AlignCenter)
-            self.nextquestionButton.clicked.connect(lambda: self.nextQuestionAction())
+            self.playPageLayout.addWidget(self.mainmenuButton, alignment=Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom)
+            self.playPageLayout.addWidget(self.nextquestionButton, alignment=Qt.AlignmentFlag.AlignHCenter)
+            self.mainmenuButton.clicked.connect(self.playPageInit)
+            self.nextquestionButton.clicked.connect(self.nextQuestionAction)
             
 
     def nextQuestionAction(self):
+        self.playPageLayout.removeWidget(self.mainmenuButton)
         self.playPageLayout.removeWidget(self.nextquestionButton)
+        self.mainmenuButton.deleteLater()
         self.nextquestionButton.deleteLater()
         self.printQuestion(self.controller.random_phrase())
+
+    def playPageInit(self):
+        if self.startPlayButton is None:
+            self.removePlaypageWidget()
+        else:
+            return
+        
+        self.startPlayButton = QPushButton(" Play !")
+        self.startPlayButton.setStyleSheet("""
+                                        QPushButton{
+                                            background-color:#FFD43B;
+                                            padding: 10px 30px;
+                                            font-size: 20px;
+                                            border-radius: 5px;
+                                            color:#0a2463;
+                                            font-weight: 600;
+                                        }
+                                        QPushButton:hover{
+                                            background-color: #0a2463;
+                                            color: #FFD43B;
+                                        }
+                                        """)
+        self.playPageLayout.addWidget(self.startPlayButton, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.startPlayButton.clicked.connect(lambda: self.printQuestion(self.controller.random_phrase()))
+
+    def removePlaypageWidget(self):
+            widgets = [self.question, self.verb, self.subject, self.tense, self.form, self.verbAttachement, self.subjectAttachement, self.tenseAttachement, self.formAttachement, self.nextquestionButton, self.mainmenuButton]
+            for widget in widgets:
+                self.playPageLayout.removeWidget(widget)
+                widget.deleteLater()
+            self.playPageLayout.removeItem(self.questionBox)
+            self.questionBox.deleteLater()
 
     def switchPage(self, index):
         self.stackedWidget.setCurrentIndex(index)
