@@ -13,7 +13,8 @@ class MainControlleur:
         self.view = view
         self.view.controller = self
 
-        
+        self.view.printParameter(verbs.list_of_verbs, tenses.list_of_tenses, subjects.list_of_subjects, forms.list_of_forms)
+
         self.view.startPlayButton.clicked.connect(lambda: self.view.printQuestion(self.random_phrase()))
 
         self.view.playButton.clicked.connect(lambda: self.view.buttonSidebar(self.view.playButton, self.view.parameterButton))

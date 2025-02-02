@@ -1,5 +1,6 @@
 import time
 import random
+import colorama
 import os
 
 from PyQt6.QtWidgets import *
@@ -83,12 +84,8 @@ class MainView(QMainWindow):
         self.playPageLayout.addWidget(self.startPlayButton, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.parameterPage = QFrame()
-        self.parameterPage.setStyleSheet("background-color: rgba(255, 255, 255, 0.90); color:white; border-radius:10px;")
+        self.parameterPage.setStyleSheet("background-color: rgba(255, 255, 255, 0.90); color:black; border-radius:10px;")
         self.parameterPageLayout = QVBoxLayout(self.parameterPage)
-
-        label_2 = QLabel("Derien !")
-        self.parameterPageLayout.addWidget(label_2, alignment=Qt.AlignmentFlag.AlignHCenter)
-        self.parameterPageLayout.addStretch()
 
         self.stackedWidget.addWidget(self.playPage)
         self.stackedWidget.addWidget(self.parameterPage)
@@ -266,80 +263,64 @@ class MainView(QMainWindow):
             other.setIcon(QIcon(f"{self.imgPath}circle-play-solid.svg"))
             btn.setIcon(QIcon(f"{self.imgPath}gear-solid_1.svg"))
 
+    def printParameter(self, v, t, s, f):
+        self.parameterLabelStyle = "background-color: white; padding: 5px 5px; font-size: 15px; font-weight: 600;"
+        self.parameterValidButtonStyle = "background-color: green; padding: 5px 5px; font-size: 15px; font-weight: 600;"
+        self.parameterInvalidButtonStyle = "background-color: red; padding: 5px 5px; font-size: 15px; font-weight: 600;"
+        
+        self.verbLayout = QHBoxLayout()
+        self.tenseLayout = QHBoxLayout()
+        self.subjectLayout = QHBoxLayout()
+        self.formLayout = QHBoxLayout()
 
-
-"""
-def choose_mod():
-    r = input("Play or Parameter ? : ")
-
-    while r.lower() not in ["play", "parameter"]:
-        r = input("Please write your answer correctly (Play or Parameter) : ")
-
-    if r.lower() == "play":
-        return "play"
-    elif r.lower() == "parameter":
-        return "parameter"
-
-def is_parameter_finish():
-    r = input("Are you finished ?(Yes/No) : ")
-    while r.lower() not in ["yes", "no"]:
-        r = input("Please write your answer correctly (Yes or No) : ")
-
-    return r.lower() == "yes"
-
-def print_parameter(v, t, s, f):
-    print("Verbs: ")
-    for i in range(len(v)):
-        if i != len(v)-1:
+        self.verbLabelParameter = QLabel("Verb :")
+        self.parameterPageLayout.addWidget(self.verbLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        self.parameterPageLayout.addLayout(self.verbLayout)
+        for i in range(len(v)):
+            self.verbButton = QPushButton(v[i][0])
+            self.verbButton.clicked.connect(self.parameterObjectButton)
+            self.verbLayout.addWidget(self.verbButton, alignment=Qt.AlignmentFlag.AlignTop)
             if v[i][1]:
-                print(colorama.Fore.CYAN + v[i][0] + colorama.Fore.RESET + ", ", end="")
+                self.verbButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
-                print(colorama.Fore.RED + v[i][0] + colorama.Fore.RESET + ", ", end="")
-        else:
-            if v[i][1]:
-                print(colorama.Fore.CYAN + v[i][0] + colorama.Fore.RESET)
-            else:
-                print(colorama.Fore.RED + v[i][0] + colorama.Fore.RESET)
-    print()
-    print("Tenses: ")
-    for i in range(len(t)):
-        if i != len(t)-1:
+                self.verbButton.setStyleSheet(self.parameterInvalidButtonStyle)
+
+        self.tenseLabelParameter = QLabel("Tenses: ")
+        self.parameterPageLayout.addWidget(self.tenseLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        self.parameterPageLayout.addLayout(self.tenseLayout)
+        for i in range(len(t)):
             if t[i][1]:
                 print(colorama.Fore.CYAN + t[i][0] + colorama.Fore.RESET + ", ", end="")
             else:
                 print(colorama.Fore.RED + t[i][0] + colorama.Fore.RESET + ", ", end="")
-        else:
-            if t[i][1]:
-                print(colorama.Fore.CYAN + t[i][0] + colorama.Fore.RESET)
-            else:
-                print(colorama.Fore.RED + t[i][0] + colorama.Fore.RESET)
-    print()
-    print("Subjects: ")
-    for i in range(len(s)):
-        if i != len(s)-1:
+
+        self.subjectLabelParameter = QLabel("Subjects: ")
+        self.parameterPageLayout.addWidget(self.subjectLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        self.parameterPageLayout.addLayout(self.subjectLayout)
+        for i in range(len(s)):
             if s[i][1]:
                 print(colorama.Fore.CYAN + s[i][0] + colorama.Fore.RESET + ", ", end="")
             else:
                 print(colorama.Fore.RED + s[i][0] + colorama.Fore.RESET + ", ", end="")
-        else:
-            if s[i][1]:
-                print(colorama.Fore.CYAN + s[i][0] + colorama.Fore.RESET)
-            else:
-                print(colorama.Fore.RED + s[i][0] + colorama.Fore.RESET)
-    print()
-    print("Forms: ")
-    for i in range(len(f)):
-        if i != len(f)-1:
+
+        self.formLabelParameter = QLabel("Forms: ")
+        self.parameterPageLayout.addWidget(self.formLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
+        self.parameterPageLayout.addLayout(self.formLayout)
+        for i in range(len(f)):
             if f[i][1]:
                 print(colorama.Fore.CYAN + f[i][0] + colorama.Fore.RESET + ", ", end="")
             else:
                 print(colorama.Fore.RED + f[i][0] + colorama.Fore.RESET + ", ", end="")
-        else:
-            if f[i][1]:
-                print(colorama.Fore.CYAN + f[i][0] + colorama.Fore.RESET)
-            else:
-                print(colorama.Fore.RED + f[i][0] + colorama.Fore.RESET)
 
+        labels = [self.verbLabelParameter, self.tenseLabelParameter, self.subjectLabelParameter, self.formLabelParameter]
+        for label in labels:
+            label.setStyleSheet(self.parameterLabelStyle)
+            #label.setMaximumSize(50, 50)
+
+    def parameterObjectButton(self):
+        print("YESSSSSSSSSSSSSSSSSSSS")
+
+"""
 def change_parameter(method):
     r = input("Do you want to make some changes ?(Yes/No) :")
     while r.lower() not in ["yes", "no"]:
