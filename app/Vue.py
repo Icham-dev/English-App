@@ -13,6 +13,7 @@ class MainView(QMainWindow):
         self.controller = None
         self.imgPath = os.path.join(os.path.dirname(__file__), "img/")
         self.screen = QGuiApplication.primaryScreen().availableGeometry()
+        print(self.screen.height(), self.screen.width())
         self.setWindowTitle("English Training")
 
         centreWidget = QWidget()
@@ -85,6 +86,7 @@ class MainView(QMainWindow):
         
         self.parameterPage = QFrame()
         self.parameterPage.setStyleSheet("background-color: rgba(255, 255, 255, 0.90); color:black; border-radius:10px;")
+        self.parameterPage.setMaximumSize(self.screen.width()-self.sideBar.width()*2, self.screen.height()-self.sideBar.width()*2)
         self.parameterPageLayout = QVBoxLayout(self.parameterPage)
 
         self.stackedWidget.addWidget(self.playPage)
