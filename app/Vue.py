@@ -1,6 +1,5 @@
 import time
 import random
-import colorama
 import os
 
 from PyQt6.QtWidgets import *
@@ -270,18 +269,21 @@ class MainView(QMainWindow):
         self.parameterValidButtonStyle = "background-color: green; padding: 5px 5px; font-size: 15px; font-weight: 600;"
         self.parameterInvalidButtonStyle = "background-color: red; padding: 5px 5px; font-size: 15px; font-weight: 600;"
         
-        self.verbLayout = QHBoxLayout()
-        self.tenseLayout = QHBoxLayout()
-        self.subjectLayout = QHBoxLayout()
-        self.formLayout = QHBoxLayout()
+        self.verbLayout = QGridLayout()
+        self.tenseLayout = QGridLayout()
+        self.subjectLayout = QGridLayout()
+        self.formLayout = QGridLayout()
+        self.buttonPerLine = (17 * self.screen.width()) // 1920
 
         self.verbLabelParameter = QLabel("Verb :")
         self.parameterPageLayout.addWidget(self.verbLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.verbLayout)
         for i in range(len(v)):
+            row = i // self.buttonPerLine
+            col = i % self.buttonPerLine
             self.verbButton = QPushButton(v[i][0])
-            self.verbButton.clicked.connect(self.parameterObjectButton)
-            self.verbLayout.addWidget(self.verbButton, alignment=Qt.AlignmentFlag.AlignTop)
+            self.verbButton.clicked.connect(self.controller.parameterObjectButton)
+            self.verbLayout.addWidget(self.verbButton, row, col)
             if v[i][1]:
                 self.verbButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
@@ -291,36 +293,51 @@ class MainView(QMainWindow):
         self.parameterPageLayout.addWidget(self.tenseLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.tenseLayout)
         for i in range(len(t)):
+            row = i // self.buttonPerLine
+            col = i % self.buttonPerLine
+            self.tenseButton = QPushButton(t[i][0])
+            self.tenseButton.clicked.connect(self.controller.parameterObjectButton)
+            self.tenseLayout.addWidget(self.tenseButton, row, col)
             if t[i][1]:
-                print(colorama.Fore.CYAN + t[i][0] + colorama.Fore.RESET + ", ", end="")
+                self.tenseButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
-                print(colorama.Fore.RED + t[i][0] + colorama.Fore.RESET + ", ", end="")
+                self.tenseButton.setStyleSheet(self.parameterInvalidButtonStyle)
 
         self.subjectLabelParameter = QLabel("Subjects: ")
         self.parameterPageLayout.addWidget(self.subjectLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.subjectLayout)
         for i in range(len(s)):
+            row = i // self.buttonPerLine
+            col = i % self.buttonPerLine
+            self.subjectButton = QPushButton(s[i][0])
+            self.subjectButton.clicked.connect(self.controller.parameterObjectButton)
+            self.subjectLayout.addWidget(self.subjectButton, row, col)
             if s[i][1]:
-                print(colorama.Fore.CYAN + s[i][0] + colorama.Fore.RESET + ", ", end="")
+                self.subjectButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
-                print(colorama.Fore.RED + s[i][0] + colorama.Fore.RESET + ", ", end="")
+                self.subjectButton.setStyleSheet(self.parameterInvalidButtonStyle)
 
         self.formLabelParameter = QLabel("Forms: ")
         self.parameterPageLayout.addWidget(self.formLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.formLayout)
         for i in range(len(f)):
+            row = i // self.buttonPerLine
+            col = i % self.buttonPerLine
+            self.formButton = QPushButton(f[i][0])
+            self.formButton.clicked.connect(self.controller.parameterObjectButton)
+            self.formLayout.addWidget(self.formButton, row, col)
             if f[i][1]:
-                print(colorama.Fore.CYAN + f[i][0] + colorama.Fore.RESET + ", ", end="")
+                self.formButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
-                print(colorama.Fore.RED + f[i][0] + colorama.Fore.RESET + ", ", end="")
+                self.formButton.setStyleSheet(self.parameterInvalidButtonStyle)
 
         labels = [self.verbLabelParameter, self.tenseLabelParameter, self.subjectLabelParameter, self.formLabelParameter]
         for label in labels:
             label.setStyleSheet(self.parameterLabelStyle)
             #label.setMaximumSize(50, 50)
 
-    def parameterObjectButton(self):
-        print("YESSSSSSSSSSSSSSSSSSSS")
+    
+        
 
 """
 def change_parameter(method):

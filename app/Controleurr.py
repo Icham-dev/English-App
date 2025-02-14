@@ -53,6 +53,9 @@ class MainControlleur:
                 [subjects.add_subjects, subjects.select_subjects, subjects.deselect_subjects, subjects.update_subject],
                 [tenses.add_tenses, tenses.select_tenses, tenses.deselect_tenses, tenses.update_tense],
                 [forms.add_forms, forms.select_forms, forms.deselect_forms, forms.update_form]]
+    
+    def parameterObjectButton(self, obj):
+        print("YESSSSSSSSSSSSSS")
 
 
 if __name__ == "__main__":

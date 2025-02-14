@@ -1,4 +1,5 @@
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To be able to use this app you need to install Python.
@@ -6,11 +7,9 @@ To be able to use this app you need to install Python.
 ### Installation of Python for Windows
 
 1. Go to [https://www.python.org/downloads/](https://www.python.org/downloads/)
-   
-3. Download the latest version of Python
+2. Download the latest version of Python
    ![alt text](https://wiki.student.info.ucl.ac.be/uploads/Logiciels/Python3/w1.png)
-   
-4. Run the .exe file, make sue to check the **Add Python to PATH** and click **Install now**
+3. Run the .exe file, make sure to check the **Add Python to PATH** and click **Install now**
    ![alt text](https://wiki.student.info.ucl.ac.be/uploads/Logiciels/Python3/w2.png)
 
 ---
@@ -22,6 +21,4 @@ To be able to use this app you need to install Python.
 
 2. Run the **installation.bat**
 
-
-   
 ## Enjoy The Application
