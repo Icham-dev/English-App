@@ -12,7 +12,6 @@ class Verbs:
             if v[i] not in self.list_of_verbs:
                 self.list_of_verbs.append((v[i], True))
 
-
     def select_verbs(self, v):
         if type(v) != list:
             v = [v]
@@ -43,6 +42,12 @@ class Verbs:
                 self.list_of_verbs[i] = tuple(self.list_of_verbs[i])
                 
                 return
+            
+    def is_selected(self, verb):
+        for v, state in self.list_of_verbs:
+            if v == verb:
+                return state
+        return False
 
 class Subjects:
     def __init__(self):
@@ -88,6 +93,12 @@ class Subjects:
                 self.list_of_subjects[i][0] = s2
                 self.list_of_subjects[i] = tuple(self.list_of_subjects[i])
                 return
+    
+    def is_selected(self, subject):
+        for s, state in self.list_of_subjects:
+            if s == subject:
+                return state
+        return False
 
 class Tenses:
     def __init__(self):
@@ -134,6 +145,12 @@ class Tenses:
                 self.list_of_tenses[i] = tuple(self.list_of_tenses[i])
                 
                 return
+            
+    def is_selected(self, tense):
+        for t, state in self.list_of_tenses:
+            if t == tense:
+                return state
+        return False
     
 class Forms:
     def __init__(self):
@@ -179,8 +196,14 @@ class Forms:
                 self.list_of_forms[i][0] = f2
                 self.list_of_forms[i] = tuple(self.list_of_forms[i])
                 return
+            
+    def is_selected(self, form):
+        for f, state in self.list_of_forms:
+            if f == form:
+                return state
+        return False  # Si le verbe n'existe pas, retourne False
 
-
+"""
 verbs = Verbs()
 list_verbs = ["do", "be", "have", "say", "get", "make", "go", "know", "take", "see", "come", "think","look", "want", "give", "use", "find", "tell", "ask", "work", "seem", "feel", "try", "leave","call", "need", "fight", "put", "mean", "keep", "push", "cost", "cut", "hit", "hurt", "bring","build", "burn", "buy", "catch", "dream", "hear", "hold", "learn", "lose", "meet", "pay", "read","sell", "send", "sleep", "smell", "stand", "teach", "understand", "win", "begin", "drink", "break", "choose","draw", "drive", "eat", "fall", "fly", "forget", "grow", "hide", "show", "sing", "speak", "swear","swim", "throw", "write", "run"]
 for verb in list_verbs:
@@ -200,3 +223,4 @@ forms = Forms()
 list_forms = ["affirmative", "negative", "interrogative", "interro-negative"]
 for form in list_forms:
     forms.add_forms(form)
+"""

@@ -1,6 +1,5 @@
-import time
-import random
 import os
+from functools import partial
 
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
@@ -278,18 +277,20 @@ class MainView(QMainWindow):
         self.verbLabelParameter = QLabel("Verb :")
         self.parameterPageLayout.addWidget(self.verbLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.verbLayout)
+        self.verbListButton = []
         for i in range(len(v)):
             row = i // self.buttonPerLine
             col = i % self.buttonPerLine
             self.verbButton = QPushButton(v[i][0])
-            self.verbButton.clicked.connect(self.controller.parameterObjectButton)
+            self.verbListButton.append(self.verbButton)
             self.verbLayout.addWidget(self.verbButton, row, col)
-            if v[i][1]:
-                self.verbButton.setStyleSheet(self.parameterValidButtonStyle)
-            else:
-                self.verbButton.setStyleSheet(self.parameterInvalidButtonStyle)
 
-        self.tenseLabelParameter = QLabel("Tenses: ")
+            self.isValid = v[i][1]
+            self.verbButton.clicked.connect(partial(self.controller.parameterObjectButton, v[i][0], self.controller.verbModel, i, self.verbListButton))
+            self.verbButton.setStyleSheet(self.parameterValidButtonStyle if self.isValid else self.parameterInvalidButtonStyle)
+        self.parameterPageLayout.addStretch(1)
+
+        self.tenseLabelParameter = QLabel("Tenses :")
         self.parameterPageLayout.addWidget(self.tenseLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.tenseLayout)
         for i in range(len(t)):
@@ -302,8 +303,9 @@ class MainView(QMainWindow):
                 self.tenseButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
                 self.tenseButton.setStyleSheet(self.parameterInvalidButtonStyle)
+        self.parameterPageLayout.addStretch(1)
 
-        self.subjectLabelParameter = QLabel("Subjects: ")
+        self.subjectLabelParameter = QLabel("Subjects :")
         self.parameterPageLayout.addWidget(self.subjectLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.subjectLayout)
         for i in range(len(s)):
@@ -316,8 +318,9 @@ class MainView(QMainWindow):
                 self.subjectButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
                 self.subjectButton.setStyleSheet(self.parameterInvalidButtonStyle)
+        self.parameterPageLayout.addStretch(1)
 
-        self.formLabelParameter = QLabel("Forms: ")
+        self.formLabelParameter = QLabel("Forms :")
         self.parameterPageLayout.addWidget(self.formLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.formLayout)
         for i in range(len(f)):
@@ -330,11 +333,11 @@ class MainView(QMainWindow):
                 self.formButton.setStyleSheet(self.parameterValidButtonStyle)
             else:
                 self.formButton.setStyleSheet(self.parameterInvalidButtonStyle)
+        self.parameterPageLayout.addStretch(1)
 
         labels = [self.verbLabelParameter, self.tenseLabelParameter, self.subjectLabelParameter, self.formLabelParameter]
         for label in labels:
             label.setStyleSheet(self.parameterLabelStyle)
-            #label.setMaximumSize(50, 50)
 
     
         
