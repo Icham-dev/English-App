@@ -57,13 +57,11 @@ class MainControlleur:
     def parameterObjectButton(self, obj, objType, index, buttonList):
         match objType:
             case self.verbModel:
-                print("test")
                 if self.verbModel.is_selected(obj):
                     objType.deselect_verbs(obj)
                     buttonList[index].setStyleSheet(self.view.parameterInvalidButtonStyle)
                 else:
                     objType.select_verbs(obj)
-                    print(self.verbModel.list_of_verbs)
                     buttonList[index].setStyleSheet(self.view.parameterValidButtonStyle)
 
             case self.tenseModel:
@@ -120,21 +118,3 @@ if __name__ == "__main__":
     view.showMaximized()
 
     sys.exit(app.exec())
-
-
-
-    #choose_mode = Vue.choose_mod()
-    #if choose_mode == "parameter":
-    #    finish = False
-    #    while not finish:
-    #        Vue.print_parameter(verbs.list_of_verbs, tenses.list_of_tenses, subjects.list_of_subjects, forms.list_of_forms)
-    #        Vue.change_parameter(get_method())
-    #        if Vue.is_parameter_finish():
-    #            finish = True
-    #elif choose_mode == "play":
-    #    c = 0
-    #    while Vue.is_ready(c):
-    #        random_phrase = random_phrase()
-    #        Vue.question(random_phrase)
-    #        Vue.check_answer(answer(), random_phrase[1], random_phrase[2], random_phrase[0], random_phrase[3])
-    #        c += 1

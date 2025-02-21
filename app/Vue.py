@@ -11,7 +11,6 @@ class MainView(QMainWindow):
         self.controller = None
         self.imgPath = os.path.join(os.path.dirname(__file__), "img/")
         self.screen = QGuiApplication.primaryScreen().availableGeometry()
-        print(self.screen.height(), self.screen.width())
         self.setWindowTitle("English Training")
 
         centreWidget = QWidget()
@@ -83,7 +82,7 @@ class MainView(QMainWindow):
         self.playPageLayout.addWidget(self.startPlayButton, alignment=Qt.AlignmentFlag.AlignCenter)
         
         self.parameterPage = QFrame()
-        self.parameterPage.setStyleSheet("background-color: rgba(255, 255, 255, 0.90); color:black; border-radius:10px;")
+        self.parameterPage.setStyleSheet("background-color: rgba(255, 255, 255, 1); color:black; border-radius:10px;")
         self.parameterPage.setMaximumSize(self.screen.width()-self.sideBar.width()*2, self.screen.height()-self.sideBar.width()*2)
         self.parameterPageLayout = QVBoxLayout(self.parameterPage)
 
@@ -265,8 +264,8 @@ class MainView(QMainWindow):
 
     def printParameter(self, v, t, s, f):
         self.parameterLabelStyle = "background-color: white; padding: 5px 5px; font-size: 15px; font-weight: 600;"
-        self.parameterValidButtonStyle = "background-color: green; padding: 5px 5px; font-size: 15px; font-weight: 600;"
-        self.parameterInvalidButtonStyle = "background-color: red; padding: 5px 5px; font-size: 15px; font-weight: 600;"
+        self.parameterValidButtonStyle = "background-color: #BDECB6; padding: 5px 5px; font-size: 15px; font-weight: 600;"
+        self.parameterInvalidButtonStyle = "background-color: #FF6961; padding: 5px 5px; font-size: 15px; font-weight: 600;"
         
         self.verbLayout = QGridLayout()
         self.tenseLayout = QGridLayout()
@@ -285,155 +284,55 @@ class MainView(QMainWindow):
             self.verbListButton.append(self.verbButton)
             self.verbLayout.addWidget(self.verbButton, row, col)
 
-            self.isValid = v[i][1]
             self.verbButton.clicked.connect(partial(self.controller.parameterObjectButton, v[i][0], self.controller.verbModel, i, self.verbListButton))
-            self.verbButton.setStyleSheet(self.parameterValidButtonStyle if self.isValid else self.parameterInvalidButtonStyle)
+            self.verbButton.setStyleSheet(self.parameterValidButtonStyle if v[i][1] else self.parameterInvalidButtonStyle)
         self.parameterPageLayout.addStretch(1)
 
         self.tenseLabelParameter = QLabel("Tenses :")
         self.parameterPageLayout.addWidget(self.tenseLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.tenseLayout)
+        self.tenseListButton = []
         for i in range(len(t)):
             row = i // self.buttonPerLine
             col = i % self.buttonPerLine
             self.tenseButton = QPushButton(t[i][0])
-            self.tenseButton.clicked.connect(self.controller.parameterObjectButton)
+            self.tenseListButton.append(self.tenseButton)
             self.tenseLayout.addWidget(self.tenseButton, row, col)
-            if t[i][1]:
-                self.tenseButton.setStyleSheet(self.parameterValidButtonStyle)
-            else:
-                self.tenseButton.setStyleSheet(self.parameterInvalidButtonStyle)
+
+            self.tenseButton.clicked.connect(partial(self.controller.parameterObjectButton, t[i][0], self.controller.tenseModel, i, self.tenseListButton))
+            self.tenseButton.setStyleSheet(self.parameterValidButtonStyle if t[i][1] else self.parameterInvalidButtonStyle)
         self.parameterPageLayout.addStretch(1)
 
         self.subjectLabelParameter = QLabel("Subjects :")
         self.parameterPageLayout.addWidget(self.subjectLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.subjectLayout)
+        self.subjectListButton = []
         for i in range(len(s)):
             row = i // self.buttonPerLine
             col = i % self.buttonPerLine
             self.subjectButton = QPushButton(s[i][0])
-            self.subjectButton.clicked.connect(self.controller.parameterObjectButton)
+            self.subjectListButton.append(self.subjectButton)
             self.subjectLayout.addWidget(self.subjectButton, row, col)
-            if s[i][1]:
-                self.subjectButton.setStyleSheet(self.parameterValidButtonStyle)
-            else:
-                self.subjectButton.setStyleSheet(self.parameterInvalidButtonStyle)
+
+            self.subjectButton.clicked.connect(partial(self.controller.parameterObjectButton, s[i][0], self.controller.subjectModel, i, self.subjectListButton))
+            self.subjectButton.setStyleSheet(self.parameterValidButtonStyle if s[i][1] else self.parameterInvalidButtonStyle)
         self.parameterPageLayout.addStretch(1)
 
         self.formLabelParameter = QLabel("Forms :")
         self.parameterPageLayout.addWidget(self.formLabelParameter, alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignHCenter)
         self.parameterPageLayout.addLayout(self.formLayout)
+        self.formListButton = []
         for i in range(len(f)):
             row = i // self.buttonPerLine
             col = i % self.buttonPerLine
             self.formButton = QPushButton(f[i][0])
-            self.formButton.clicked.connect(self.controller.parameterObjectButton)
+            self.formListButton.append(self.formButton)
             self.formLayout.addWidget(self.formButton, row, col)
-            if f[i][1]:
-                self.formButton.setStyleSheet(self.parameterValidButtonStyle)
-            else:
-                self.formButton.setStyleSheet(self.parameterInvalidButtonStyle)
+
+            self.formButton.clicked.connect(partial(self.controller.parameterObjectButton, f[i][0], self.controller.formModel, i, self.formListButton))
+            self.formButton.setStyleSheet(self.parameterValidButtonStyle if f[i][1] else self.parameterInvalidButtonStyle)
         self.parameterPageLayout.addStretch(1)
 
         labels = [self.verbLabelParameter, self.tenseLabelParameter, self.subjectLabelParameter, self.formLabelParameter]
         for label in labels:
             label.setStyleSheet(self.parameterLabelStyle)
-
-    
-        
-
-"""
-def change_parameter(method):
-    r = input("Do you want to make some changes ?(Yes/No) :")
-    while r.lower() not in ["yes", "no"]:
-        r = input("Please write your answer correctly (Yes or No) : ")
-
-    if r.lower() == "yes":
-        change_choice = input("Which one? (Verbs/Tenses/Subjects/Forms)").lower()
-        while change_choice not in ["verbs", "tenses", "subjects", "forms"]:
-            change_choice = input("Please write your answer correctly (Verbs/Tenses/Subjects/Forms) : ")
-        match change_choice:
-            case "verbs":
-                choose_method = input("What do you want to do ?(Add/Select/Deselect/Update)").lower()
-                match choose_method:
-                    case "add":
-                        choose_verb = input("Write the verb(s)(separate them with coma without space) : ").split(",")
-                        method[0][0](choose_verb)
-                    case "select":
-                        choose_verb = input("Write the verb(s)(separate them with coma without space) : ").split(",")
-                        method[0][1](choose_verb)
-                    case "deselect":
-                        choose_verb = input("Write the verb(s)(separate them with coma without space) : ").split(",")
-                        method[0][2](choose_verb)
-                    case "update":
-                        choose_verb = input("Write the two verbs (separate them with coma without space) : ").split(",")
-                        method[0][3](choose_verb[0], choose_verb[1])
-            case "tenses":
-                choose_method = input("What do you want to do ?(Add/Select/Deselect/Update)").lower()
-                match choose_method:
-                    case "add":
-                        choose_tense = input("Write the tense(s)(separate them with coma without space) : ").split(",")
-                        method[2][0](choose_tense)
-                    case "select":
-                        choose_tense = input("Write the tense(s)(separate them with coma without space) : ").split(",")
-                        method[2][1](choose_tense)
-                    case "deselect":
-                        choose_tense = input("Write the tense(s)(separate them with coma without space) : ").split(",")
-                        method[2][2](choose_tense)
-                    case "update":
-                        choose_tense = input("Write the two tenses (separate them with coma without space) : ").split(",")
-                        method[2][3](choose_tense[0], choose_tense[1])
-            case "subjects":
-                choose_method = input("What do you want to do ?(Add/Select/Deselect/Update)").lower()
-                match choose_method:
-                    case "add":
-                        choose_subject = input("Write the subject(s)(separate them with coma without space) : ").split(",")
-                        method[1][0](choose_subject)
-                    case "select":
-                        choose_subject = input("Write the subject(s)(separate them with coma without space) : ").split(",")
-                        method[1][1](choose_subject)
-                    case "deselect":
-                        choose_subject = input("Write the subject(s)(separate them with coma without space) : ").split(",")
-                        method[1][2](choose_subject)
-                    case "update":
-                        choose_subject = input("Write the two subjects (separate them with coma without space) : ").split(",")
-                        method[1][3](choose_subject[0], choose_subject[1])
-            case "forms":
-                choose_method = input("What do you want to do ?(Add/Select/Deselect/Update)").lower()
-                match choose_method:
-                    case "add":
-                        choose_form = input("Write the form(s)(separate them with coma without space) : ").split(",")
-                        method[3][0](choose_form)
-                    case "select":
-                        choose_form = input("Write the form(s)(separate them with coma without space) : ").split(",")
-                        method[3][1](choose_form)
-                    case "deselect":
-                        choose_form = input("Write the form(s)(separate them with coma without space) : ").split(",")
-                        method[3][2](choose_form)
-                    case "update":
-                        choose_form = input("Write the two forms (separate them with coma without space) : ").split(",")
-                        method[3][3](choose_form[0], choose_form[1])
-
-def is_ready(c):
-    if c == 0:
-        r = input("Are you ready ?(Yes/No) : ")
-    else:
-        r = input("Next ?(Yes/No) : ")
-    while r.lower() not in ["yes", "no"]:
-        r = input("Please write your answer correctly (Yes or No) : ")
-
-    return r.lower() == "yes"
-
-def question(random_phrase):
-    for i in range(3, 0, -1):
-        print(i)
-        time.sleep(1)
-    print()
-    print("Give me a sentence with : ")
-    print(f"Subject : {random_phrase[0]}\nVerb : {random_phrase[1]}\nTense : {random_phrase[2]}\nForm : {random_phrase[3]}")
-    print()
-
-def check_answer(answer, verb, tense, subject, form):
-    pass
-
-"""
